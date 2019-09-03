@@ -18,8 +18,6 @@ def main():
         # "youtube-dl",
     ]
 
-    snaps = ["code", "chromium"]
-
     postInstalls = ["install --fix-broken", "autoremove"]
 
     for upgrade in upgrades:
@@ -30,9 +28,6 @@ def main():
 
     for postInstall in postInstalls:
         run(f"sudo apt --yes {postInstall}".split(" "))
-
-    for snap in snaps:
-        run(["sudo", "snap", "install", snap])
 
 
 if __name__ == "__main__":
