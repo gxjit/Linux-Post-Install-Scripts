@@ -1,4 +1,5 @@
 from subprocess import run
+from os.path import expanduser, join, expandvars
 
 
 def main():
@@ -35,15 +36,17 @@ def main():
         "pi": "pip install",
         "ai": "sudo apt install",
         "..": "cd ..",
-        "-": "cd -",
+        # "-": "cd -",
         "lsc": "ls --color=auto",
         "ll": "ls -la",
         "l.": "ls -d .* --color=auto",
     }
 
-    env = {"PATH": "$HOME/.local/bin:$PATH"}
+    env = {"PATH": "$HOME/.npm-packages/bin:$HOME/.local/bin:$PATH"}
 
-    with open("~/.bashrc", "a") as f:
+    interactiveShell = {"shell": "fish", "active": False}
+
+    with open(join(expanduser("~"), ".bashrc"), "a") as f:
 
         f.write("\n\n# Aliases\n\n")
         for name, command in aliases.items():
@@ -51,7 +54,14 @@ def main():
 
         f.write("\n\n# Env Exports\n\n")
         for var, path in env.items():
-            f.write(f"export {var}='{path}'\n")
+            f.write(f"export {var}='{expandvars(path)}'\n")
+
+        if interactiveShell["active"]:
+            f.write(
+                '\n\n# Switch to an interactive shell on launch\n\n'
+                'if [ -z "$BASH_EXECUTION_STRING" ];'
+                f' then exec {interactiveShell["shell"]}; fi\n'
+            )
 
 
 if __name__ == "__main__":
