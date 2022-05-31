@@ -1,12 +1,23 @@
+from argparse import ArgumentParser
 from subprocess import run
 
 
-def main():
+def parseArgs():
+    parser = ArgumentParser()
+    parser.add_argument("-s", "--server", action="store_true")
 
-    upgrades = ["update", "upgrade"]
+    return parser.parse_args()
+
+
+pargs = parseArgs()
+
+upgrades = ["update", "upgrade"]
+
+if not pargs.server:
 
     installs = [
         "build-essential",
+        "python-is-python3",
         "curl",
         "xclip",
         "synaptic",
@@ -18,17 +29,24 @@ def main():
         # "youtube-dl",
     ]
 
-    postInstalls = ["install --fix-broken", "autoremove"]
+elif pargs.server:
 
-    for upgrade in upgrades:
-        run(["sudo", "apt", "--yes", upgrade])
+    installs = [
+        "curl",
+        "python-is-python3",
+        "xonsh",
+        "glances",
+        "ufw",
+    ]
 
-    for install in installs:
-        run(["sudo", "apt", "--yes", "install", install])
 
-    for postInstall in postInstalls:
-        run(f"sudo apt --yes {postInstall}".split(" "))
+postInstalls = ["autoremove", "clean"]
 
+for upgrade in upgrades:
+    run(["sudo", "apt-get", "-y", upgrade])
 
-if __name__ == "__main__":
-    main()
+for install in installs:
+    run(["sudo", "apt-get", "-y", "install", install])
+
+for postInstall in postInstalls:
+    run(f"sudo apt-get -y {postInstall}")
