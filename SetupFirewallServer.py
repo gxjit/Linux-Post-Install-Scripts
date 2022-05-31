@@ -6,9 +6,9 @@ cmds = [
     "status",
     "default deny incoming",
     "default deny outgoing",
-    "allow out ssh",
-    "allow out http",
-    "allow out https",
+    "allow out ssh", # 22
+    "allow out http", # 80
+    "allow out https", # 443
     "allow out 53", # DNS
     "allow in ssh",
     "allow in 2222",
