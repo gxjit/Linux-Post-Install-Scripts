@@ -24,7 +24,7 @@ if not pargs.server:
         "gnome-tweaks",
         "vlc",
         "gparted",
-        # "youtube-dl",
+        # "yt-dlp",
     ]
 
 elif pargs.server:
