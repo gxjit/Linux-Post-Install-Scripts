@@ -1,4 +1,4 @@
-hostname "Singh-PC"
+sudo hostname "Singh-PC"
 bash $(pwd)/setupTime.sh
 bash $(pwd)/ConfigureGit.sh
 python3 $(pwd)/ConfigureBash.py
@@ -8,4 +8,4 @@ bash $(pwd)/InstallThirdParty.sh
 python3 $(pwd)/TweakGnome.py
 python3 $(pwd)/SetupFirewall.py
 python3 $(pwd)/DownloadInstallFonts.py
-bash $(pwd)/npmConfig.sh
+# bash $(pwd)/npmConfig.sh
