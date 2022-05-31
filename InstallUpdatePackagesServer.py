@@ -4,6 +4,7 @@ upgrades = ["update", "upgrade"]
 
 installs = [
     "curl",
+    "python-is-python3",
     "xonsh",
     "glances",
     "ufw",

@@ -6,10 +6,14 @@ cmds = [
     "status",
     "default deny incoming",
     "default deny outgoing",
+    "allow out ssh",
     "allow out http",
     "allow out https",
-    "allow out ssh",
-    "allow out 53",
+    "allow out 53", # DNS
+    "allow in ssh",
+    "allow in 2222",
+    # "allow in http",
+    # "allow in https",
     "logging off", # Minimize writes to SSD
     "enable",
     "status",
