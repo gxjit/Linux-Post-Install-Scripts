@@ -9,7 +9,7 @@ cmds = [
     "allow out http",
     "allow out https",
     "allow out ssh",
-    "allow out 53",
+    "allow out dns",
     "logging off", # Minimize writes to SSD
     "enable",
     "status",
