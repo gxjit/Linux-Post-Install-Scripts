@@ -1,18 +1,17 @@
 from json import loads
-# from os import chdir, getcwd, mkdir
-from os.path import basename, expandvars, join
-# abspath, expanduser,
+from os.path import basename, expandvars
 from pathlib import Path
 from platform import system
 from shutil import move, rmtree
 from subprocess import DEVNULL, run
-# from sys import exit, path
+
+# from sys import exit
 from tempfile import TemporaryDirectory
 from urllib.request import urlopen, urlretrieve
 from zipfile import ZipFile
 
 githubFonts = ["tonsky/FiraCode", "i-tu/Hasklig"]
-# "be5invis/iosevka" breaks script will fix later
+# "be5invis/iosevka" breaks script, will fix later
 
 googleFonts = ["Fira Mono", "Source Code Pro", "Inconsolata"]
 
@@ -28,42 +27,40 @@ fontsPath.mkdir()
 
 if system() == "Linux":
     userFonts = Path.home().joinpath(".local/share/fonts/")
-    # join(expanduser("~"), ".local/share/fonts/")
 
 elif system() == "Windows":
     userFonts = Path.home().joinpath("Downloads/fonts/")
-    # join(expanduser("~"), "Downloads/fonts/")
-    # userFonts = join(expandvars(r"%WINDIR%"), "Fonts/")
-    # Windows install adding registry values in "HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Fonts" referencing the font filename
+    # userFonts = Path(expandvars(r"%WINDIR%")).joinpath("Fonts/")
+    # Windows install requires adding registry values referencing the font filename
+    # "HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Fonts"
 
 
 def downloadFonts(url, fileName, downloadPath):
     zipName = f"{fileName}.zip"
     downloadFile = downloadPath.joinpath(zipName)
-    # join(abspath("./download"), zipName)
     urlretrieve(url, downloadFile)
     return downloadFile
 
 
 def extractFonts(downloadPath, fileName, fontsPath):
     fontsDir = fontsPath.joinpath(fileName)
-    # join(abspath("./fonts"), fileName)
     with ZipFile(downloadPath) as zip:
         nameList = zip.namelist()
         for file in nameList:
-            if (file.startswith("ttf/") or file.startswith("TTF/")) and file.endswith(".ttf"):
+            lowFile = file.lower()
+            if lowFile.startswith("ttf/") and lowFile.endswith(".ttf"):
                 zipInfo = zip.getinfo(file)
                 zipInfo.filename = basename(file)
                 zip.extract(zipInfo, fontsDir)
             elif (
                 file.startswith(fileName)
-                and file.endswith(".ttf")
+                and lowFile.endswith(".ttf")
                 and "ttf/" not in nameList
             ):
                 zip.extract(file, fontsDir)
             elif (
                 file.startswith(fileName)
-                and file.endswith(".otf")
+                and lowFile.endswith(".otf")
                 and "ttf/" not in nameList
             ):
                 zip.extract(file, fontsDir)
@@ -73,7 +70,6 @@ def extractFonts(downloadPath, fileName, fontsPath):
 
 def installFonts(fontsDir, userFonts):
     installPath = userFonts.joinpath(fontsDir.name)
-    # installPath = join(userFonts, basename(fontsDir))
     rmtree(installPath, ignore_errors=True)
     move(fontsDir, installPath)
 
@@ -124,9 +120,7 @@ for font in googleFonts:
 if system() == "Linux":
     refreshFontCache()
 
-# tmp.cleanup()
-
-try:
+try:  # TemporaryDirectory clean up is buggy on windows
     tmp.cleanup()
 except:
     print("Unable to clean temporary directory.")
