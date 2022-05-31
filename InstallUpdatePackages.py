@@ -13,34 +13,31 @@ pargs = parseArgs()
 
 upgrades = ["update", "upgrade"]
 
+commonInstalls = ["ufw", "python-is-python3", "xonsh", "curl"]
+
 if not pargs.server:
 
     installs = [
+        *commonInstalls,
         "build-essential",
-        "python-is-python3",
-        "curl",
-        "xclip",
         "synaptic",
         "gnome-tweaks",
-        "ufw",
         "vlc",
         "gparted",
-        "ffmpeg",
         # "youtube-dl",
     ]
 
 elif pargs.server:
 
     installs = [
-        "curl",
-        "python-is-python3",
-        "xonsh",
+        *commonInstalls,
         "glances",
-        "ufw",
     ]
 
 
 postInstalls = ["autoremove", "clean"]
+
+# run = print # test
 
 for upgrade in upgrades:
     run(["sudo", "apt-get", "-y", upgrade])
