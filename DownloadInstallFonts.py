@@ -20,8 +20,8 @@ tmp = TemporaryDirectory(ignore_cleanup_errors=True)
 tmpPath = Path(tmp.name)
 # print(tmp.name)
 downloadPath = tmpPath.joinpath("download")
-downloadPath.mkdir()
 fontsPath = tmpPath.joinpath("fonts")
+downloadPath.mkdir()
 fontsPath.mkdir()
 
 
@@ -125,12 +125,3 @@ try:  # TemporaryDirectory clean up is buggy on windows
 except:
     print("Unable to clean temporary directory.")
 
-# TemporaryDirectory Bug
-# def cleanUp():
-#     # chdir(dd)
-#     try:
-#         tmp.cleanup()
-#     except:
-#         print("Unable to clean temporary directory.")
-# import atexit
-# atexit.register(cleanUp)
