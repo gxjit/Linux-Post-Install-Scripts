@@ -13,12 +13,12 @@ pargs = parseArgs()
 
 upgrades = ["update", "upgrade"]
 
-commonInstalls = ["ufw", "python-is-python3", "xonsh", "curl"]
+baseInstalls = ["ufw", "python-is-python3", "xonsh", "curl", "p7zip-full"]
 
 if not pargs.server:
 
     installs = [
-        *commonInstalls,
+        *baseInstalls,
         "build-essential",
         "synaptic",
         "gnome-tweaks",
@@ -30,7 +30,7 @@ if not pargs.server:
 elif pargs.server:
 
     installs = [
-        *commonInstalls,
+        *baseInstalls,
         "glances",
     ]
 
