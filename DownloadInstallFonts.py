@@ -15,7 +15,7 @@ githubFonts = ["tonsky/FiraCode", "JetBrains/JetBrainsMono", "i-tu/Hasklig"]
 googleFonts = ["Fira Mono", "Source Code Pro", "Inconsolata"]
 
 # Alternatives
-# "IBM/plex" "microsoft/cascadia-code" "madmalik/mononoki"
+# "IBM/plex" "microsoft/cascadia-code" "be5invis/Iosevka"
 # "Anonymous Pro" "IBM Plex Sans"
 
 tmp = TemporaryDirectory(ignore_cleanup_errors=True)
@@ -109,6 +109,7 @@ def downloadGithubFonts(repo, downloadPath, fontsPath, userFonts):
     respDict = loads(urlopen(url).read().decode("utf-8"))
     downloadURL = respDict["assets"][0]["browser_download_url"]
     downloadExtractInstall(downloadURL, fileName, downloadPath, fontsPath, userFonts)
+    # TODO: for more than one download look for files with "ttf" "truetype" in name
 
 
 for font in githubFonts:
