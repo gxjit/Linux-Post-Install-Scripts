@@ -11,9 +11,12 @@ from urllib.request import urlopen, urlretrieve
 from zipfile import ZipFile
 
 githubFonts = ["tonsky/FiraCode", "JetBrains/JetBrainsMono", "i-tu/Hasklig"]
-# "be5invis/iosevka" breaks script, will fix later
 
 googleFonts = ["Fira Mono", "Source Code Pro", "Inconsolata"]
+
+# Alternatives
+# "IBM/plex" "microsoft/cascadia-code" "madmalik/mononoki"
+# "Anonymous Pro" "IBM Plex Sans"
 
 tmp = TemporaryDirectory(ignore_cleanup_errors=True)
 
@@ -127,3 +130,4 @@ except:
 #     for fnt in respDict["assets"]:
 #         if "ttf" in fnt["browser_download_url"]:
 #             downloadURL = fnt["browser_download_url"]
+# "static/" in filename
