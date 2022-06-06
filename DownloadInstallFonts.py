@@ -10,7 +10,7 @@ from tempfile import TemporaryDirectory
 from urllib.request import urlopen, urlretrieve
 from zipfile import ZipFile
 
-githubFonts = ["tonsky/FiraCode", "i-tu/Hasklig"]
+githubFonts = ["tonsky/FiraCode", "JetBrains/JetBrainsMono", "i-tu/Hasklig"]
 # "be5invis/iosevka" breaks script, will fix later
 
 googleFonts = ["Fira Mono", "Source Code Pro", "Inconsolata"]
@@ -48,23 +48,21 @@ def extractFonts(downloadPath, fileName, fontsPath):
         nameList = zip.namelist()
         for file in nameList:
             lowFile = file.lower()
-            if lowFile.startswith("ttf/") and lowFile.endswith(".ttf"):
-                zipInfo = zip.getinfo(file)
-                zipInfo.filename = basename(file)
-                zip.extract(zipInfo, fontsDir)
-            elif (
-                file.startswith(fileName)
-                and lowFile.endswith(".ttf")
-                and "ttf/" not in nameList
+            if any(
+                (
+                    file.startswith("_"),
+                    file.startswith("."),
+                    "variable" in lowFile,
+                    "wght" in lowFile,
+                )
             ):
-                zip.extract(file, fontsDir)
-            elif (
-                file.startswith(fileName)
-                and lowFile.endswith(".otf")
-                and "ttf/" not in nameList
-            ):
-                zip.extract(file, fontsDir)
-    # input()
+                # print(f"skipping {file}")
+                continue
+            if lowFile.endswith(".ttf"):
+                # print(f"extacting {file}")
+                zipFileInfo = zip.getinfo(file)
+                zipFileInfo.filename = basename(file)
+                zip.extract(zipFileInfo, fontsDir)
     return fontsDir
 
 
@@ -82,6 +80,7 @@ def downloadExtractInstall(downloadURL, fileName, downloadPath, fontsPath, userF
     print(f"Installing {fileName}...")
     installFonts(fontsDir, userFonts)
     print(f"Finished! Installing {fileName}.")
+    # print(tmpPath); input()
 
 
 def refreshFontCache():
@@ -101,13 +100,6 @@ def downloadGithubFonts(repo, downloadPath, fontsPath, userFonts):
     url = f"https://api.github.com/repos/{repo}/releases/latest"
     respDict = loads(urlopen(url).read().decode("utf-8"))
     downloadURL = respDict["assets"][0]["browser_download_url"]
-    # if "ttc" in downloadURL:
-    #     for fnt in respDict["assets"]:
-    #         if "ttf" in fnt["browser_download_url"]:
-    #             downloadURL = fnt["browser_download_url"]
-    # else:
-    #     raise()
-
     downloadExtractInstall(downloadURL, fileName, downloadPath, fontsPath, userFonts)
 
 
@@ -125,3 +117,8 @@ try:  # TemporaryDirectory clean up is buggy on windows
 except:
     print("Unable to clean temporary directory.")
 
+# any(s for s in ("variable", "wght") if s in lowFile),
+# if "ttc" in downloadURL:
+#     for fnt in respDict["assets"]:
+#         if "ttf" in fnt["browser_download_url"]:
+#             downloadURL = fnt["browser_download_url"]
