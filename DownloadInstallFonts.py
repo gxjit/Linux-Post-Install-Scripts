@@ -5,7 +5,7 @@ from platform import system
 from shutil import move, rmtree
 from subprocess import DEVNULL, run
 
-# from sys import exit
+from sys import exit
 from tempfile import TemporaryDirectory
 from urllib.request import urlopen, urlretrieve
 from zipfile import ZipFile
@@ -33,6 +33,11 @@ elif system() == "Windows":
     # userFonts = Path(expandvars(r"%WINDIR%")).joinpath("Fonts/")
     # Windows install requires adding registry values referencing the font filename
     # "HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Fonts"
+else:
+    print("Target Unsupported.")
+    exit(1)
+
+print(f"Install location: {userFonts}")
 
 
 def downloadFonts(url, fileName, downloadPath):
