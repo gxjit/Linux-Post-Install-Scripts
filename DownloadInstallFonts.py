@@ -1,5 +1,5 @@
 from json import loads
-from os.path import basename, expandvars
+from os.path import basename
 from pathlib import Path
 from platform import system
 from shutil import move, rmtree
@@ -10,13 +10,13 @@ from tempfile import TemporaryDirectory
 from urllib.request import urlopen, urlretrieve
 from zipfile import ZipFile
 
-githubFonts = ["tonsky/FiraCode", "JetBrains/JetBrainsMono", "i-tu/Hasklig"]
+githubFonts = ["tonsky/FiraCode", "i-tu/Hasklig", "JetBrains/JetBrainsMono"]
 
 googleFonts = ["Fira Mono", "Source Code Pro", "Inconsolata"]
 
 # Alternatives
-# "IBM/plex" "microsoft/cascadia-code" "be5invis/Iosevka"
-# "Anonymous Pro" "IBM Plex Sans"
+# "arrowtype/recursive" "IBM/plex" "be5invis/Iosevka" "microsoft/cascadia-code"
+# "Roboto Mono" "PT Mono" "Anonymous Pro" "Recursive" "IBM Plex Mono"
 
 tmp = TemporaryDirectory(ignore_cleanup_errors=True)
 
@@ -62,6 +62,7 @@ def extractFonts(downloadPath, fileName, fontsPath):
                     file.startswith("."),
                     "variable" in lowFile,
                     "wght" in lowFile,
+                    # "vf" in lowFile,
                 )
             ):
                 # print(f"skipping {file}")
@@ -106,10 +107,18 @@ def downloadGoogleFonts(name, downloadPath, fontsPath, userFonts):
 def downloadGithubFonts(repo, downloadPath, fontsPath, userFonts):
     fileName = repo.split("/")[1]
     url = f"https://api.github.com/repos/{repo}/releases/latest"
-    respDict = loads(urlopen(url).read().decode("utf-8"))
-    downloadURL = respDict["assets"][0]["browser_download_url"]
-    downloadExtractInstall(downloadURL, fileName, downloadPath, fontsPath, userFonts)
-    # TODO: for more than one download look for files with "ttf" "truetype" in name
+    dwnAssets = loads(urlopen(url).read().decode("utf-8"))["assets"]
+
+    if len(dwnAssets) == 1:
+        downloadURL = dwnAssets[0]["browser_download_url"]
+    else:
+        for ast in dwnAssets:
+            url = ast["browser_download_url"].lower()
+            if "ttf" in url or "true" in url:
+                downloadURL = ast["browser_download_url"]
+                break
+
+    downloadExtractInstall(downloadURL, fileName, downloadPath, fontsPath, userFonts)  # type: ignore # noqa
 
 
 for font in githubFonts:
@@ -123,12 +132,8 @@ if system() == "Linux":
 
 try:  # TemporaryDirectory clean up is buggy on windows
     tmp.cleanup()
-except:
+except:  # noqa
     print("Unable to clean temporary directory.")
 
 # any(s for s in ("variable", "wght") if s in lowFile),
-# if "ttc" in downloadURL:
-#     for fnt in respDict["assets"]:
-#         if "ttf" in fnt["browser_download_url"]:
-#             downloadURL = fnt["browser_download_url"]
 # "static/" in filename
