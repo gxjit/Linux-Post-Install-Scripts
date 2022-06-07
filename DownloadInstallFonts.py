@@ -17,6 +17,7 @@ googleFonts = ["Fira Mono", "Source Code Pro", "Inconsolata"]
 # Alternatives
 # "arrowtype/recursive" "IBM/plex" "be5invis/Iosevka" "microsoft/cascadia-code"
 # "Roboto Mono" "PT Mono" "Anonymous Pro" "Recursive" "IBM Plex Mono"
+# TODO: ryanoasis/nerd-fonts support
 
 tmp = TemporaryDirectory(ignore_cleanup_errors=True)
 
