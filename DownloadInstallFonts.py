@@ -15,7 +15,7 @@ githubFonts = ["tonsky/FiraCode", "i-tu/Hasklig", "JetBrains/JetBrainsMono"]
 googleFonts = ["Fira Mono", "Source Code Pro", "Inconsolata"]
 
 # Alternatives
-# "arrowtype/recursive" "IBM/plex" "be5invis/Iosevka" "microsoft/cascadia-code"
+# "IBM/plex" "arrowtype/recursive" "be5invis/Iosevka" "microsoft/cascadia-code"
 # "Roboto Mono" "PT Mono" "Anonymous Pro" "Recursive" "IBM Plex Mono"
 # TODO: ryanoasis/nerd-fonts support
 
